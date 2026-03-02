@@ -1,0 +1,6 @@
+=>create product api with below operations
+create new product({productid, name, brand, price})
+read all products
+read products by brand
+update a product
+delete a product by id

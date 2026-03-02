@@ -1,0 +1,69 @@
+### read all users
+GET http://localhost:1424/users
+
+### read a user by id
+GET http://localhost:1424/users/9
+
+###
+POST http://localhost:1424/users
+Content-Type: application/json
+
+{
+  "id":"9",
+  "name":"mahesh",
+  "age":21
+}
+
+###
+POST http://localhost:1424/users
+Content-Type: application/json
+
+{
+  "id":"03",
+  "name":"sanju",
+  "age":20
+}
+
+###
+PUT http://localhost:1424/users
+Content-Type: application/json
+
+{
+  "id":"03",
+  "name":"ponnu",
+  "age":21
+}
+###
+DELETE http://localhost:1424/users/98
+
+//get and delete request donot pass data -> no body . so that these two requests can send data through end point
+//post request and put request should send data to the api as body of the request object.
+
+
+###
+GET http://localhost:1424/products
+
+###
+POST http://localhost:1424/products
+Content-Type: application/json
+
+{
+  "productId":"1",
+  "name":"mobile",
+  "brand":"Apple",
+  "price":135000
+}
+
+###
+PUT http://localhost:1424/products
+Content-Type: application/json
+
+{
+  "productId":"1",
+  "name":"macbook",
+  "brand":"Apple",
+  "price":250000
+}
+
+###
+DELETE http://localhost:1424/products
