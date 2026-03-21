@@ -1,24 +1,28 @@
-function validateTitle(title) {
-  if (!title) {
-    return "Title Required";
+import {
+  validateTitle,
+  validatePriority,
+  validateDueDate,
+} from "./validator.js";
+let tasks = [];
+function addTask(title, priority, dueDate) {
+  if (!validateTitle() && !validatePriority() && !validateDueDate()) {
+    return false;
   }
-  if (title.length < 3) {
-    return "Min 3 characters are required";
-  }
-  return true;
+  //push taskObj to tasks array
+
+  return tasks.push(title, priority, dueDate);
 }
-function validatePriority(priority) {
-  if (priority == "LOW" || priority == "MID" || priority == "HIGH") {
-    return true;
-  }
-  return "priority must be LOW,MID,HIGH";
+function getAllTasks() {
+  // Return all tasks
+  return tasks;
 }
-function validateDueDate(dateStr) {
-  let dueDate = new Date(dateStr);
-  let today = new Date(); //for system date
-  if (dueDate < today) {
-    return "Expired";
-  }
-  return true;
+
+function completeTask(taskId) {
+  //find task and marks as complete
+  const findTask = tasks.find((taskElement) => taskElement.id === taskId);
+  if (!findTask) return "task not found";
+  findTask.completed = true;
+  return "task completed";
 }
-export { validateTitle, validatePriority, validateDueDate };
+
+export { addTask, getAllTasks, completeTask };
