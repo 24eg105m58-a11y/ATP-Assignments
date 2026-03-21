@@ -1,22 +1,24 @@
-import {validateTitle, validatePriority,validateDueDate} from './validator.js'
-let tasks=[];
-function addTask(title, priority, dueDate){
-  if(!validateTitle() && !validatePriority() && !validateDueDate()){
-    return false  
+function validateTitle(title) {
+  if (!title) {
+    return "Title Required";
   }
-  //push taskObj to tasks array
-  
-  return tasks.push(title,priority,dueDate)
+  if (title.length < 3) {
+    return "Min 3 characters are required";
+  }
+  return true;
 }
-function getAllTasks() {
-// Return all tasks
-  return tasks
+function validatePriority(priority) {
+  if (priority == "LOW" || priority == "MID" || priority == "HIGH") {
+    return true;
   }
-
-
-function completeTask(taskId) {
-// Find task and mark as complete
-  let findTask=tasks.find(taskId)
-  return findTask
+  return "priority must be LOW,MID,HIGH";
+}
+function validateDueDate(dateStr) {
+  let dueDate = new Date(dateStr);
+  let today = new Date(); //for system date
+  if (dueDate < today) {
+    return "Expired";
   }
-export {addTask,getAllTasks,completeTask}
+  return true;
+}
+export { validateTitle, validatePriority, validateDueDate };
