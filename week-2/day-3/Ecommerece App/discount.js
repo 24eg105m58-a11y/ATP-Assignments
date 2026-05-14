@@ -8,58 +8,67 @@ const coupons = {
     category: "electronics",
   },
 };
-let valid,message;
-export function validateCoupon(couponCode, cartTotal, cartItems) {
-  // 1. Check if coupon exists
-  if(!coupons.couponCode){
-    return false
+
+export function validateCoupon(code, cartTotal, cartItems = []) {
+  const couponCode = String(code ?? "").trim();
+  const coupon = coupons[couponCode];
+
+  if (!coupon) return { valid: false, message: "Invalid coupon" };
+  if (cartTotal < coupon.minAmount) {
+    return { valid: false, message: "Minimum amount not met" };
   }
-  // 2. Check minimum amount requirement
-  if(!coupons.minAmount){
-    return false
+
+  if (coupon.category) {
+    const hasEligibleItem = cartItems.some(
+      (item) => item.product?.category === coupon.category,
+    );
+    if (!hasEligibleItem) {
+      return {
+        valid: false,
+        message: `Coupon requires at least one ${coupon.category} item`,
+      };
+    }
   }
-  // 3. Check category requirement (if any)
-  // Return { valid: true/false, message: '...' }
-  if(!coupons.ELECTRONICS20.category){
-    return false
-   }
-   return valid=true,message="it is valid"
+
+  return { valid: true, coupon, message: "Coupon applied" };
 }
 
-export function calculateDiscount(couponCode, cartTotal) {
-  // Calculate discount amount based on coupon type
-  // Return discount amount
-  if(couponCode==WELCOME10){
-    discount=10/100*cartTotal
-  }else if(couponCode==FLAT500){
-    discount=500
+export function calculateDiscount(coupon, cartTotal, cartItems = []) {
+  if (!coupon) return 0;
+
+  let baseTotal = cartTotal;
+  if (coupon.category) {
+    baseTotal = cartItems.reduce((sum, item) => {
+      if (item.product?.category !== coupon.category) return sum;
+      return sum + item.lineTotal;
+    }, 0);
   }
-  else if(couponCode==ELECTRONICS20){
-    discount=20/100*cartTotal
-  }
-  return discount
+
+  let discount = 0;
+  if (coupon.type === "percentage") discount = (coupon.value / 100) * baseTotal;
+  if (coupon.type === "flat") discount = coupon.value;
+
+  if (!Number.isFinite(discount) || discount < 0) discount = 0;
+  return Math.min(discount, cartTotal);
 }
 
-export function applyDiscount(cartTotal, couponCode, cartItems) {
-  // 1. Validate coupon
-  if(validateCoupon){
-    return true
+export function applyDiscount(cartTotal, couponCode, cartItems = []) {
+  const result = validateCoupon(couponCode, cartTotal, cartItems);
+
+  if (!result.valid) {
+    return {
+      originalTotal: cartTotal,
+      discount: 0,
+      finalTotal: cartTotal,
+      message: result.message,
+    };
   }
-  // 2. If valid, calculate discount
-  if(valid){
-    calculateDiscount(couponCode,cartTotal)
-  }
-  // 3. Return final amount and discount details
-  // Return {
-  //   originalTotal: ...,
-  //   discount: ...,
-  //   finalTotal: ...,
-  //   message: '...'
-  // }
+
+  const discount = calculateDiscount(result.coupon, cartTotal, cartItems);
   return {
-    originalTotal:cartTotal,
-  discount,
-  finalTotal: discount - cartTotal,
-  message
-  }
+    originalTotal: cartTotal,
+    discount,
+    finalTotal: cartTotal - discount,
+    message: result.message,
+  };
 }

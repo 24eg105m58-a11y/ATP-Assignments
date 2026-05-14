@@ -1,54 +1,34 @@
-import {
-  getAllProducts,
-  searchProducts,
-  getProductsByCategory,
-} from "./product.js";
-
+import { getAllProducts, searchProducts } from "./product.js";
 import {
   addToCart,
   getCartItems,
   getCartTotal,
   updateQuantity,
-  removeFromCart,
+  removeFromCart
 } from "./cart.js";
-
 import { processPayment } from "./payment.js";
 
-console.log("=== E-Commerce Store ===\n");
+console.log("=== E-COMMERCE STORE ===");
 
-// 1. Browse products
-console.log("All Products:");
+console.log("\nAll Products:");
 console.log(getAllProducts());
 
-// 2. Search for products
-console.log('\nSearching for "phone":');
+console.log("\nSearch:");
 console.log(searchProducts("phone"));
 
-// 3. Add items to cart
-console.log("\n=== Adding to Cart ===");
-console.log(addToCart(1, 2)); // 2 Laptops
-console.log(addToCart(3, 3)); // 3 Headphones
-console.log(addToCart(1, 1)); // 1 more Laptop (should update quantity)
+console.log("\nAdd Items:");
+console.log(addToCart(1, 2));
+console.log(addToCart(3, 3));
 
-// 4. View cart
-console.log("\n=== Current Cart ===");
+console.log("\nCart:");
 console.log(getCartItems());
-console.log("Cart Total:", getCartTotal());
+console.log("Total:", getCartTotal());
 
-// 5. Update quantity
-console.log("\n=== Updating Quantities ===");
-console.log(updateQuantity(1, 2)); // Change laptop quantity to 2
+console.log("\nUpdate:");
+console.log(updateQuantity(1, 2));
 
-// 6. Remove item
-console.log("\n=== Removing Item ===");
-console.log(removeFromCart(3)); // Remove headphones
+console.log("\nRemove:");
+console.log(removeFromCart(3));
 
-// 7. View updated cart
-console.log("\n=== Updated Cart ===");
-console.log(getCartItems());
-console.log("Cart Total:", getCartTotal());
-
-// 8. Checkout with coupon
-console.log("\n=== Checkout ===");
-const order = processPayment("upi", "WELCOME10");
-console.log(order);
+console.log("\nCheckout:");
+console.log(processPayment("upi", "WELCOME10"));

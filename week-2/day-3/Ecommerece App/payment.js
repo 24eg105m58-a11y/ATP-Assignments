@@ -1,52 +1,58 @@
-import { reduceStock } from "./product.js";
 import { getCartItems, getCartTotal, clearCart } from "./cart.js";
 import { applyDiscount } from "./discount.js";
+import { reduceStock } from "./product.js";
 
-export function processPayment(paymentMethod, couponCode = null) {
-  // 1. Get cart items and total
-  const items=products.name
-  const total=products.reduce((totalAmount,next)=>totalAmount+next, 0)
-
-  // 2. Apply discount if coupon provided
-  if(couponCode!=null){
-    return discount=total-total*couponCode
-  }
-
-  // 3. Validate payment method (card/upi/cod)
-  if(paymentMethod!=""){
-    return paymentMethod
-  }
-
-  // 4. Process payment (simulate)
-  if(paymentMethod!=""){
-    return simulating
-  }
-
-  // 5. Reduce stock for all items
-  reduceStock(getProductById,quantity)
-
-  // 6. Clear cart
-  
-  
-  // 7. Generate order summary
-  // Return order summary:
-  // {
-  //   orderId: ...,
-  //   items: [...],
-  //   subtotal: ...,
-  //   discount: ...,
-  //   total: ...,
-  //   paymentMethod: ...,
-  //   status: 'success/failed',
-  //   message: '...'
-  // }
-}
-
-export function validatePaymentMethod(method) {
-  // Check if method is valid (card/upi/cod)
-}
-
+// Generate order ID
 function generateOrderId() {
-  // Generate random order ID
   return "ORD" + Date.now();
+}
+
+// Validate payment method
+export function validatePaymentMethod(method) {
+  return ["card", "upi", "cod"].includes(method);
+}
+
+// Process payment
+export function processPayment(paymentMethod, couponCode = null) {
+  const method = String(paymentMethod ?? "").trim().toLowerCase();
+  const items = getCartItems();
+  const subtotal = getCartTotal();
+
+  if (items.length === 0) {
+    return { status: "failed", message: "Cart is empty" };
+  }
+
+  if (!validatePaymentMethod(method)) {
+    return { status: "failed", message: "Invalid payment method" };
+  }
+
+  const shouldApplyCoupon = String(couponCode ?? "").trim().length > 0;
+  const discountData = shouldApplyCoupon
+    ? applyDiscount(subtotal, couponCode, items)
+    : {
+        originalTotal: subtotal,
+        discount: 0,
+        finalTotal: subtotal,
+        message: "No coupon applied",
+      };
+
+  // Reduce stock
+  for (let item of items) {
+    if (item.product?.id) {
+      reduceStock(item.product.id, item.quantity);
+    }
+  }
+
+  clearCart();
+
+  return {
+    orderId: generateOrderId(),
+    items,
+    subtotal,
+    discount: discountData.discount,
+    total: discountData.finalTotal,
+    paymentMethod: method,
+    status: "success",
+    message: discountData.message
+  };
 }

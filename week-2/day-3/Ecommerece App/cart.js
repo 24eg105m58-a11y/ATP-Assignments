@@ -1,49 +1,95 @@
-import { getProductById, checkStock,products } from "./product.js";
+import { getProductById } from "./product.js";
 
 let cartItems = [];
-export function addToCart(productId, quantity) {
-  // 1. Get product details
-  console.log(products[productId])
-  // 2. Check stock availability
-  checkStock(productId,quantity)
 
-  // 3. Check if product already in cart
-  //    - If yes, update quantity
-  //    - If no, add new item
-  for(let productElement=0;productElement<cartItems.length;productElement++){
-    if(cartItems[productElement].id==productId){
-      cartItems[productElement].quantity+=quantity
-      return cartItems[productElement].quantity
-    }
-  }
-  // 4. Return success/error message
-return cartItems.length!=0?"success":"error"
+function findCartItem(productId) {
+  const id = Number(productId);
+  return cartItems.find((item) => item.productId === id) ?? null;
 }
+
+export function addToCart(productId, quantity) {
+  const id = Number(productId);
+  const qty = Number(quantity);
+
+  if (!Number.isInteger(id) || id <= 0) return "Invalid product id";
+  if (!Number.isInteger(qty) || qty <= 0) return "Invalid quantity";
+
+  const product = getProductById(id);
+  if (!product) return "Product not found";
+
+  const existing = findCartItem(id);
+  const nextQuantity = (existing?.quantity ?? 0) + qty;
+  if (product.stock < nextQuantity) {
+    return `Not enough stock for ${product.name}. Available: ${product.stock}`;
+  }
+
+  if (existing) {
+    existing.quantity = nextQuantity;
+    return `Updated ${product.name} quantity to ${existing.quantity}`;
+  }
+
+  cartItems.push({ productId: id, quantity: qty });
+  return `Added ${qty} x ${product.name} to cart`;
+}
+
 export function removeFromCart(productId) {
-  // Remove product from cart
-  cartItems.splice(cartItems[productId+1],1)
+  const id = Number(productId);
+  const index = cartItems.findIndex((item) => item.productId === id);
+  if (index === -1) return "Item not found in cart";
+  cartItems.splice(index, 1);
+  return "Item removed from cart";
 }
 
 export function updateQuantity(productId, newQuantity) {
-  // Update quantity of product in cart
-  // Check stock before updating
-  checkStock(productId, newQuantity);
-  products[productId].quantity=newQuantity;
+  const id = Number(productId);
+  const qty = Number(newQuantity);
+
+  if (!Number.isInteger(id) || id <= 0) return "Invalid product id";
+  if (!Number.isInteger(qty)) return "Invalid quantity";
+
+  const product = getProductById(id);
+  if (!product) return "Product not found";
+
+  const item = findCartItem(id);
+  if (!item) return "Item not found in cart";
+
+  if (qty <= 0) {
+    return removeFromCart(id);
+  }
+
+  if (product.stock < qty) {
+    return `Not enough stock for ${product.name}. Available: ${product.stock}`;
+  }
+
+  item.quantity = qty;
+  return `Updated ${product.name} quantity to ${item.quantity}`;
 }
 
 export function getCartItems() {
-  // Return all cart items with product details
-  return cartItems
+  return cartItems.map(({ productId, quantity }) => {
+    const product = getProductById(productId);
+    const unitPrice = product?.price ?? 0;
+
+    return {
+      product: product
+        ? {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            category: product.category,
+          }
+        : null,
+      quantity,
+      lineTotal: unitPrice * quantity,
+    };
+  });
 }
 
 export function getCartTotal() {
-  // Calculate total price of all items in cart
-  // Return total
-let cartTotal=products.reduce((pre,post)=>pre+post.price*post.quantity,0)
-return cartTotal
+  return getCartItems().reduce((sum, item) => sum + item.lineTotal, 0);
 }
 
 export function clearCart() {
-  // Empty the cart
-  return cartItems.splice(0,cartItems.length)
+  cartItems = [];
+  return "Cart cleared";
 }
