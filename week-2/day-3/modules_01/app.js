@@ -1,8 +1,6 @@
 import { addTask, getAllTasks, completeTask } from "./task.js";
 
-/**
- * Demo usage of Task Manager
- */
+
 
 console.log("=== TASK MANAGER ===");
 
