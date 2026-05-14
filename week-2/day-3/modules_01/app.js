@@ -1,9 +1,24 @@
 import { addTask, getAllTasks, completeTask } from "./task.js";
-addTask("Eating", "MID", "2026-01-02");
-addTask("SLEEPING", "HIGH", "2026-11-02");
-addTask("DA", "LOW", "2026-01-02");
+
+/**
+ * Demo usage of Task Manager
+ */
+
+console.log("=== TASK MANAGER ===");
+
+// Add tasks
+console.log(addTask("Eating", "MID", "2026-01-02"));
+console.log(addTask("Sleeping", "HIGH", "2026-11-02"));
+console.log(addTask("DA", "LOW", "2026-01-02"));
+
+// View all tasks
+console.log("\nAll Tasks:");
 console.log(getAllTasks());
-//complete a task
+
+// Complete a task
+console.log("\nComplete Task 1:");
 console.log(completeTask(1));
-//display all tasks again to check whether completed or not
+
+// View updated tasks
+console.log("\nUpdated Tasks:");
 console.log(getAllTasks());
