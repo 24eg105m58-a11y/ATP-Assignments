@@ -6,7 +6,7 @@ import cors from "cors";
 const app = exp();
 
 //add cors middleware
-app.use(cors({ origin: ["http://localhost:5173"] }));
+app.use(cors({ origin: ["http://localhost:5175"] }));
 
 app.use(exp.json());
 app.use("/employee-api", employeeApp);
