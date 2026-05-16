@@ -1,31 +1,33 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 export default function CreateEmployee() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const onFormSubmit = async (newEmployeeObj) => {
     console.log(newEmployeeObj);
-    //make HttpPot req
+
     try {
       setLoading(true);
+
       let res = await axios.post(
-        "http://localhost:5432/employee-api/employee",
+        `${import.meta.env.VITE_BACKEND_URL}/employee-api/employee`,
         newEmployeeObj,
       );
+
       if (res.status == 201) {
         navigate("/list");
-      } else {
-        let errResponse = await res.json();
-        throw new Error(errResponse.reason);
       }
     } catch (err) {
       setError(err.message);
@@ -39,6 +41,7 @@ export default function CreateEmployee() {
       <h1 className="text-center text-3xl font-bold p-3">
         Create New Employee
       </h1>
+
       <form
         className="max-w-2xs  m-auto "
         onSubmit={handleSubmit(onFormSubmit)}
@@ -49,40 +52,40 @@ export default function CreateEmployee() {
           id="name"
           {...register("name", {
             required: "name is required",
-            minLength: [6, "minimum 6 characters"],
+            minLength: {
+              value: 6,
+              message: "minimum 6 characters",
+            },
           })}
-          className="mb-3 border bg-white  p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl"
         />
-        {errors.name?.type == "required" && (
-          <p className="text-red-500">{errors.name.message}</p>
-        )}
-        {errors.name?.type == "minLength" && (
-          <p className="text-red-500">{errors.name.message}</p>
-        )}
+
+        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+
         <input
           type="text"
           placeholder="Enter eamil"
           id="email"
           {...register("email")}
-          className="mb-3 border bg-white  p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl"
         />
-        {errors.email?.type == "required" && (
-          <p className="text-red-500">{errors.name.message}</p>
-        )}
+
         <input
           type="text"
           placeholder="Enter mobile"
           id="mobile"
           {...register("mobile")}
-          className="mb-3 border bg-white  p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl"
         />
+
         <input
           type="text"
           placeholder="Enter designation"
           id="designation"
           {...register("designation")}
-          className="mb-3 border bg-white  p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl"
         />
+
         <input
           type="text"
           placeholder="Enter company Name"
@@ -90,7 +93,8 @@ export default function CreateEmployee() {
           {...register("companyName")}
           className="mb-3 border bg-white p-3 w-full rounded-2xl"
         />
-        <button className="p-3  rounded-3xl text-center block m-auto bg-gray-700 text-amber-50">
+
+        <button className="p-3 rounded-3xl text-center block m-auto bg-gray-700 text-amber-50">
           Add Employee
         </button>
       </form>

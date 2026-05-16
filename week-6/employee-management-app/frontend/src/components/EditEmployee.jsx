@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+
 export default function EditEmployee() {
   const {
     register,
@@ -12,7 +13,9 @@ export default function EditEmployee() {
 
   // get empObj from navigate hook
   const { state } = useLocation();
+
   console.log(state);
+
   useEffect(() => {
     setValue("name", state.name);
     setValue("email", state.email);
@@ -20,17 +23,16 @@ export default function EditEmployee() {
     setValue("designation", state.designation);
     setValue("companyName", state.companyName);
   }, []);
+
   const navigate = useNavigate();
 
   const saveModifiedEmployee = async (modifiedEmployee) => {
-    //console.log(modifiedEmployye);
-    //make http Put req
     const res = await axios.put(
-      `http://localhost:5432/employee-api/employee/${state._id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/employee-api/employee/${state._id}`,
       modifiedEmployee,
     );
+
     if (res.status == 200) {
-      //navigate to listOfEmps
       navigate("/list");
     }
   };
@@ -38,6 +40,7 @@ export default function EditEmployee() {
   return (
     <div className=" m-auto">
       <h1 className="text-center text-3xl font-bold p-3">Edit Employee</h1>
+
       <form
         className="max-w-2xs  m-auto"
         onSubmit={handleSubmit(saveModifiedEmployee)}
@@ -49,6 +52,7 @@ export default function EditEmployee() {
           {...register("name")}
           className="mb-3 border p-3 w-full rounded-3xl"
         />
+
         <input
           type="text"
           placeholder="Enter eamil"
@@ -57,6 +61,7 @@ export default function EditEmployee() {
           className="mb-3 border p-3 w-full rounded-3xl"
           disabled
         />
+
         <input
           type="text"
           placeholder="Enter mobile"
@@ -64,6 +69,7 @@ export default function EditEmployee() {
           {...register("mobile")}
           className="mb-3 border p-3 w-full rounded-3xl"
         />
+
         <input
           type="text"
           placeholder="Enter designation"
@@ -71,6 +77,7 @@ export default function EditEmployee() {
           {...register("designation")}
           className="mb-3 border p-3 w-full rounded-3xl"
         />
+
         <input
           type="text"
           placeholder="Enter company Name"
@@ -78,7 +85,8 @@ export default function EditEmployee() {
           {...register("companyName")}
           className="mb-3 border p-3 w-full rounded-3xl"
         />
-        <button className="p-3  rounded-3xl text-center block m-auto bg-gray-700 text-amber-50">
+
+        <button className="p-3 rounded-3xl text-center block m-auto bg-gray-700 text-amber-50">
           Update Employee
         </button>
       </form>

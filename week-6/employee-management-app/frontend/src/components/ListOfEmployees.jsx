@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function ListOfEmployees() {
@@ -27,7 +27,7 @@ export default function ListOfEmployees() {
       console.log("Deleting Employee ID:", id);
 
       const res = await axios.delete(
-        `http://localhost:5432/employee-api/employee/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/employee-api/employee/${id}`,
       );
 
       console.log(res);
@@ -44,7 +44,9 @@ export default function ListOfEmployees() {
   // Get all employees
   async function getEmps() {
     try {
-      const res = await fetch("http://localhost:5432/employee-api/employee");
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/employee-api/employee`,
+      );
 
       if (res.status === 200) {
         const resObj = await res.json();
