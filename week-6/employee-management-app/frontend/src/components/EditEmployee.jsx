@@ -38,11 +38,13 @@ export default function EditEmployee() {
   };
 
   return (
-    <div className=" m-auto">
-      <h1 className="text-center text-3xl font-bold p-3">Edit Employee</h1>
+    <div className="m-auto px-3">
+      <h1 className="text-center text-2xl sm:text-3xl font-bold p-3">
+        Edit Employee
+      </h1>
 
       <form
-        className="max-w-2xs  m-auto"
+        className="mb-3 border p-3 w-full rounded-3xl outline-none"
         onSubmit={handleSubmit(saveModifiedEmployee)}
       >
         <input
@@ -86,7 +88,7 @@ export default function EditEmployee() {
           className="mb-3 border p-3 w-full rounded-3xl"
         />
 
-        <button className="p-3 rounded-3xl text-center block m-auto bg-gray-700 text-amber-50">
+        <button className="p-3 rounded-3xl text-center block w-full mt-3 bg-gray-700 text-amber-50">
           Update Employee
         </button>
       </form>

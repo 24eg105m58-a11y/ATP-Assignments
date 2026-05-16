@@ -37,13 +37,13 @@ export default function CreateEmployee() {
   };
 
   return (
-    <div className=" m-auto">
-      <h1 className="text-center text-3xl font-bold p-3">
+    <div className="m-auto px-3">
+      <h1 className="text-center text-2xl sm:text-3xl font-bold p-3">
         Create New Employee
       </h1>
 
       <form
-        className="max-w-2xs  m-auto "
+        className="w-full max-w-md m-auto bg-white p-5 sm:p-8 rounded-2xl shadow-2xl"
         onSubmit={handleSubmit(onFormSubmit)}
       >
         <input
@@ -57,7 +57,7 @@ export default function CreateEmployee() {
               message: "minimum 6 characters",
             },
           })}
-          className="mb-3 border bg-white p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl outline-none"
         />
 
         {errors.name && <p className="text-red-500">{errors.name.message}</p>}
@@ -67,7 +67,7 @@ export default function CreateEmployee() {
           placeholder="Enter eamil"
           id="email"
           {...register("email")}
-          className="mb-3 border bg-white p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl outline-none"
         />
 
         <input
@@ -75,7 +75,7 @@ export default function CreateEmployee() {
           placeholder="Enter mobile"
           id="mobile"
           {...register("mobile")}
-          className="mb-3 border bg-white p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl outline-none"
         />
 
         <input
@@ -83,7 +83,7 @@ export default function CreateEmployee() {
           placeholder="Enter designation"
           id="designation"
           {...register("designation")}
-          className="mb-3 border bg-white p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl outline-none"
         />
 
         <input
@@ -91,10 +91,10 @@ export default function CreateEmployee() {
           placeholder="Enter company Name"
           id="companyName"
           {...register("companyName")}
-          className="mb-3 border bg-white p-3 w-full rounded-2xl"
+          className="mb-3 border bg-white p-3 w-full rounded-2xl outline-none"
         />
 
-        <button className="p-3 rounded-3xl text-center block m-auto bg-gray-700 text-amber-50">
+        <button className="p-3 rounded-3xl text-center block w-full mt-3 bg-gray-700 text-amber-50">
           Add Employee
         </button>
       </form>

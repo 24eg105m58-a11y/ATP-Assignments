@@ -66,7 +66,7 @@ export default function ListOfEmployees() {
   }, []);
 
   return (
-    <div className="text-center p-3 sm:p-5 ">
+    <div className="text-center p-3 sm:p-5">
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold p-5">
         List of Employees
       </h1>
@@ -75,34 +75,38 @@ export default function ListOfEmployees() {
         {emps.map((empObj) => (
           <div
             key={empObj._id}
-            className="bg-white p-5 rounded-2xl shadow-2xl shadow-gray-300 w-full min-h-[250px] flex flex-col justify-between"
+            className="bg-white p-5 rounded-2xl shadow-2xl shadow-gray-300 w-full min-h-[320px] flex flex-col justify-between hover:scale-105 transition-all duration-300"
           >
-            <div>
+            {/* Employee Details */}
+            <div className="space-y-3">
               <h2 className="text-xl sm:text-2xl font-bold break-words">
                 {empObj.name}
               </h2>
 
-              <p className="text-gray-600 mt-2 break-words">{empObj.email}</p>
+              <p className="text-gray-600 break-words text-sm sm:text-base">
+                {empObj.email}
+              </p>
             </div>
 
+            {/* Buttons */}
             <div className="flex flex-col gap-3 mt-6">
               <button
                 onClick={() => gotoEmployee(empObj)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-xl w-full"
+                className="bg-blue-600 hover:bg-blue-700 transition-all duration-300 text-white px-4 py-2 rounded-xl w-full"
               >
                 View
               </button>
 
               <button
                 onClick={() => editEmployee(empObj)}
-                className="bg-green-500 text-white px-4 py-2 rounded-xl w-full"
+                className="bg-green-500 hover:bg-green-600 transition-all duration-300 text-white px-4 py-2 rounded-xl w-full"
               >
                 Edit
               </button>
 
               <button
                 onClick={() => deleteEmpById(empObj._id)}
-                className="bg-red-500 text-white px-4 py-2 rounded-xl w-full"
+                className="bg-red-500 hover:bg-red-600 transition-all duration-300 text-white px-4 py-2 rounded-xl w-full"
               >
                 Delete
               </button>

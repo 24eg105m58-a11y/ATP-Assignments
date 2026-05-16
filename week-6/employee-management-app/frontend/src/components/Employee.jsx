@@ -1,16 +1,16 @@
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
+
 export default function Employee() {
-  //read  state recieved in navigation
   const { state } = useLocation();
 
   return (
-    <div className="p-16 text-center text-2xl justify-center">
-      <div className="p-16 max-w-2xl shadow-2xl shadow-gray-700 bg-white rounded-2xl">
-        <p className="font-bold">{state.name}</p>
-        <p className="font-bold">{state.email}</p>
-        <p className="font-bold">{state.mobile}</p>
-        <p className="font-bold">{state.designation}</p>
-        <p className="font-bold">{state.companyName}</p>
+    <div className="p-3 sm:p-8 flex justify-center">
+      <div className="w-full max-w-2xl bg-white p-5 sm:p-10 rounded-2xl shadow-2xl shadow-gray-700 text-center space-y-4 text-base sm:text-xl md:text-2xl break-words">
+        <p>{state.name}</p>
+        <p>{state.email}</p>
+        <p>{state.mobile}</p>
+        <p>{state.designation}</p>
+        <p>{state.companyName}</p>
       </div>
     </div>
   );
