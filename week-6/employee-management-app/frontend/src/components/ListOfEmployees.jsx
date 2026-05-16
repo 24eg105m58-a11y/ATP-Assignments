@@ -66,37 +66,43 @@ export default function ListOfEmployees() {
   }, []);
 
   return (
-    <div className="text-center p-5">
-      <h1 className="text-4xl font-bold p-5">List of Employees</h1>
+    <div className="text-center p-3 sm:p-5 ">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold p-5">
+        List of Employees
+      </h1>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {emps.map((empObj) => (
           <div
             key={empObj._id}
-            className="bg-white p-5 rounded-2xl shadow-2xl shadow-gray-300"
+            className="bg-white p-5 rounded-2xl shadow-2xl shadow-gray-300 w-full min-h-[250px] flex flex-col justify-between"
           >
-            <h2 className="text-2xl font-bold">{empObj.name}</h2>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold break-words">
+                {empObj.name}
+              </h2>
 
-            <p className="text-gray-600 mt-2">{empObj.email}</p>
+              <p className="text-gray-600 mt-2 break-words">{empObj.email}</p>
+            </div>
 
-            <div className="flex justify-around mt-5">
+            <div className="flex flex-col gap-3 mt-6">
               <button
                 onClick={() => gotoEmployee(empObj)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-xl"
+                className="bg-blue-600 text-white px-4 py-2 rounded-xl w-full"
               >
                 View
               </button>
 
               <button
                 onClick={() => editEmployee(empObj)}
-                className="bg-green-500 text-white px-4 py-2 rounded-xl"
+                className="bg-green-500 text-white px-4 py-2 rounded-xl w-full"
               >
                 Edit
               </button>
 
               <button
                 onClick={() => deleteEmpById(empObj._id)}
-                className="bg-red-500 text-white px-4 py-2 rounded-xl"
+                className="bg-red-500 text-white px-4 py-2 rounded-xl w-full"
               >
                 Delete
               </button>
